@@ -2,7 +2,7 @@
 #include <cmath> 
 using namespace std;
 
-int gcdExtended(int a, int b){
+long long gcdExtended(long long a, long long b){
   if(b == 0){
     return a;
   }
@@ -35,17 +35,27 @@ long long decrypt(long long a, long long b, long long p){
   return res;
 }
 
+long long modInverse(long long a, long long m){
+  a = a % m;
+  for (int x = 1; x < m; x++){
+    if((a * x) % m == 1){
+      return x; 
+    }
+  }
+  return 1; 
+}
+
 
 
 int main(){
 
-int n = 0; //598115629;
-int e = 0; //71;
-int cipherText = 0;
+long long n = 0; //598115629;
+long long e = 0; //71;
+long long cipherText = 0;
 
-int p = 0; 
-int q = 0; 
-int d;
+long long p = 0; 
+long long q = 0; 
+long long d;
 
 
 cout << "Enter value for n: ";
@@ -73,9 +83,7 @@ int totient = ((p-1)*(q-1));
   }
 
 
-int z = 2;
-d = (1 + z * totient) / e;
-
+d = modInverse(e, totient);
 
 cout << "Public Key: (" << n << ", " << e << ")"  << endl;
 cout << "Private Key: (" << n << ", " << d << ")"  << endl;
@@ -83,10 +91,9 @@ cout << "Private Key: (" << n << ", " << d << ")"  << endl;
 cout << "Enter cipher text: ";
 cin >> cipherText;
 
-int birthYear = decrypt(cipherText, d, n);
+long long birthYear = decrypt(cipherText, d, n);
 cout << "Decryption key: " << d << endl;
 cout << "Original Value: " << birthYear << endl;
-
 
   return 0;
 }
